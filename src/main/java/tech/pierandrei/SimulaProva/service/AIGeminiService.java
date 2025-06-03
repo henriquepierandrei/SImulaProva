@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import tech.pierandrei.SimulaProva.config.AIGeminiConfig;
 import tech.pierandrei.SimulaProva.dto.RequestDto;
 import tech.pierandrei.SimulaProva.dto.ResponseDto;
+import tech.pierandrei.SimulaProva.exceptions.NumeroDePerguntasException;
+import tech.pierandrei.SimulaProva.exceptions.TemaDaPerguntaException;
 
 @Service
 public class AIGeminiService {
@@ -15,6 +17,10 @@ public class AIGeminiService {
 
 
     public ResponseDto enviarRequisicao(RequestDto requestDto) throws JsonProcessingException {
+        if (requestDto.quantidadeDePerguntas() < 1 || requestDto.quantidadeDePerguntas() > 10 ) throw new NumeroDePerguntasException();
+
+        if (requestDto.temaDasPerguntas().length() > 300) throw new TemaDaPerguntaException();
+
         var response = aiGeminiConfig.configAIGemini(requestDto);
 
 

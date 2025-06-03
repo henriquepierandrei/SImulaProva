@@ -6,7 +6,7 @@ import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import tech.pierandrei.SimulaProva.ContextoAIGemini;
+import tech.pierandrei.SimulaProva.service.ContextoAIGemini;
 import tech.pierandrei.SimulaProva.dto.RequestDto;
 
 

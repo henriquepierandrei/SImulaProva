@@ -1,4 +1,4 @@
-package tech.pierandrei.SimulaProva;
+package tech.pierandrei.SimulaProva.service;
 
 import org.springframework.stereotype.Component;
 import tech.pierandrei.SimulaProva.dto.RequestDto;
