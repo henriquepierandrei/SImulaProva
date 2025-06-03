@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.pierandrei.SimulaProva.config.AIGeminiConfig;
 import tech.pierandrei.SimulaProva.dto.RequestDto;
 import tech.pierandrei.SimulaProva.service.AIGeminiService;
 
