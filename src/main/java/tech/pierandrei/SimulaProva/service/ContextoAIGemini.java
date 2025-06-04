@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2025 SimulaProva
+ * Autor: Henrique Pierandrei
+ * Este código é propriedade de SimulaProva
+ * Todos os direitos reservados.
+ * É proibida a reprodução, distribuição ou uso não autorizado
+ * deste código sem permissão explícita por escrito.
+ */
+
 package tech.pierandrei.SimulaProva.service;
 
 import org.springframework.stereotype.Component;
@@ -6,6 +15,7 @@ import tech.pierandrei.SimulaProva.dto.RequestDto;
 @Component
 public class ContextoAIGemini {
 
+    // Contexto para contextualizar a IA da Gemini
     public String contextAlpha(RequestDto requestDto){
         String prompt = String.format(
                 """

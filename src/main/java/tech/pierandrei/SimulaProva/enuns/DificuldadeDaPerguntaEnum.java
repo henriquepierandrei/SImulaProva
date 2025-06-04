@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2025 SimulaProva
+ * Autor: Henrique Pierandrei
+ * Este código é propriedade de SimulaProva
+ * Todos os direitos reservados.
+ * É proibida a reprodução, distribuição ou uso não autorizado
+ * deste código sem permissão explícita por escrito.
+ */
+
 package tech.pierandrei.SimulaProva.enuns;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -26,6 +35,7 @@ public enum DificuldadeDaPerguntaEnum {
         return this.displayName;
     }
 
+    // Evitar erro com o uso do Enum
     @JsonCreator
     public static DificuldadeDaPerguntaEnum fromString(String value) {
         // Primeiro tenta pelo nome do enum
