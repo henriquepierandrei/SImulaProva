@@ -13,11 +13,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum DificuldadeDaPerguntaEnum {
-    MUITO_FACIL("Muito fácil"),
     FACIL("Fácil"),
     MEDIO("Médio"),
-    DIFICIL("Difícil"),
-    MUITO_DIFICIL("Muito Difícil");
+    DIFICIL("Difícil");
 
     private final String displayName;
 

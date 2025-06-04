@@ -11,7 +11,6 @@ package tech.pierandrei.SimulaProva.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.auth.oauth2.GoogleCredentials;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +21,6 @@ import tech.pierandrei.SimulaProva.dto.RequestDto;
 import tech.pierandrei.SimulaProva.dto.ResponseDto;
 import tech.pierandrei.SimulaProva.exceptions.NumeroDePerguntasException;
 import tech.pierandrei.SimulaProva.exceptions.TemaDaPerguntaException;
-
-import java.sql.Timestamp;
-import java.time.Instant;
 
 @Service
 public class AIGeminiService {

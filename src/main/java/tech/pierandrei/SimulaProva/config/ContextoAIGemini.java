@@ -7,7 +7,7 @@
  * deste código sem permissão explícita por escrito.
  */
 
-package tech.pierandrei.SimulaProva.service;
+package tech.pierandrei.SimulaProva.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,32 +24,35 @@ public class ContextoAIGemini {
         log.debug("Contexto Alpha sendo lido");
         String prompt = String.format(
                 """
-                Você é um especialista em criação de perguntas e resposta para estudantes de todos os tipos. Crie um quiz sobre "%s" com exatamente %d perguntas, lembre-se de criar perguntas do ponto de vista do tema tratado importantes e essenciais.
+                Você é um especialista em criação de perguntas e resposta e um pesquisador altamente qualificado de questões de provas para estudantes que buscam aprender de verdade. Crie um quiz sobre "%s" com exatamente %d perguntas,
+                lembre-se de criar perguntas do ponto de vista do tema tratado importantes e bem elaboradas.
                 
                 REQUISITOS:
+                - Evite perguntas repetitivas ou genéricas.
                 - Perguntas de múltipla escolha com 4 alternativas cada
                 - Alternativas bem distribuídas em dificuldade
                 - Uma única resposta correta por pergunta
                 - Perguntas claras, objetivas e bem elaboradas
                 - Evite pegadinhas desnecessárias
-                - Varie o nível de dificuldade (muito fácil, fácil, médio, difícil, muito difícil)
+                - Quando a pergunta for difícil é para dificultar de verdade.
+                - Varie o nível de dificuldade (fácil, médio, difícil)
                 - As perguntas deve conter:
-                        Pergunta principal: 80-150 caracteres
+                        Pergunta principal: 150-250 caracteres
                                         
-                        Mínimo: 80 caracteres (muito básica)
-                        Ideal: 100-130 caracteres
-                        Máximo: 200 caracteres (sem ficar verbosa)
+                        Mínimo: 100 caracteres (muito básica)
+                        Ideal: 100-150 caracteres
+                        Máximo: 300 caracteres (sem ficar verbosa)
                                         
-                        Alternativas: 30-60 caracteres cada
+                        Alternativas: 50-100 caracteres cada
                                         
-                        Mínimo: 30 caracteres
-                        Ideal: 40-50 caracteres
-                        Máximo: 80 caracteres
+                        Mínimo: 50 caracteres
+                        Ideal: 80-100 caracteres
+                        Máximo: 150 caracteres
                                         
-                        Explicação: 100-200 caracteres
+                        Explicação: 200-300 caracteres
                                         
-                        Mínimo: 70 caracteres
-                        Ideal: 130-180 caracteres
+                        Mínimo: 150 caracteres
+                        Ideal: 200-250 caracteres
                 
                 
                 FORMATO DE RESPOSTA:
