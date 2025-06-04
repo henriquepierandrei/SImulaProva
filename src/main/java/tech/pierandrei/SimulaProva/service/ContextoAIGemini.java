@@ -9,14 +9,19 @@
 
 package tech.pierandrei.SimulaProva.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import tech.pierandrei.SimulaProva.dto.RequestDto;
 
 @Component
 public class ContextoAIGemini {
+    private static final Logger log = LoggerFactory.getLogger(ContextoAIGemini.class);
 
-    // Contexto para contextualizar a IA da Gemini
+    // Contexto para enviar o request para a IA da Gemini.
     public String contextAlpha(RequestDto requestDto){
+        // Prompt não pode ser alterado, caso alterado ocorrerá erros no response, impossibilitando do mapper executar o mapeamento para o DTO.
+        log.debug("Contexto Alpha sendo lido");
         String prompt = String.format(
                 """
                 Você é um especialista em criação de perguntas e resposta para estudantes de todos os tipos. Crie um quiz sobre "%s" com exatamente %d perguntas, lembre-se de criar perguntas do ponto de vista do tema tratado importantes e essenciais.
@@ -79,9 +84,7 @@ public class ContextoAIGemini {
                 requestDto.temaDasPerguntas(),
                 requestDto.dificuldadeDaPergunta().toString(),
                 requestDto.dificuldadeDaPergunta().toString()
-
         );
-        System.out.println(requestDto.dificuldadeDaPergunta().toString());
         return prompt;
     }
 }

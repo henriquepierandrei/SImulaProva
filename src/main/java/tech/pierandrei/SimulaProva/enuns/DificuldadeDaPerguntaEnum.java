@@ -35,7 +35,7 @@ public enum DificuldadeDaPerguntaEnum {
         return this.displayName;
     }
 
-    // Evitar erro com o uso do Enum
+    // Evitar possíveis erros com o uso do Enum.
     @JsonCreator
     public static DificuldadeDaPerguntaEnum fromString(String value) {
         // Primeiro tenta pelo nome do enum
