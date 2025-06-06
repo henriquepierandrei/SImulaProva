@@ -24,16 +24,5 @@ public record ResponseDto(
         DificuldadeDaPerguntaEnum dificuldadeDaPergunta,
 
 
-        List<Pergunta> perguntas
-) {
-    public record Pergunta(
-            String pergunta,
-            List<String> alternativas,
-            String gabarito,
-            String explicacao
-    ) {}
-
-
-
-
-}
+        List<PerguntaDto> perguntas
+) {}

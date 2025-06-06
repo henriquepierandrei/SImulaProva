@@ -24,7 +24,7 @@ public class KeepAliveSchedule {
     @Scheduled(cron = "0 */10 * * * *")
     public void keepAlive() {
         try {
-            String url = "http://localhost:8080/health";
+            String url = "https://simulaprova-latest.onrender.com/health";
             restTemplate.getForObject(url, String.class);
             log.debug("Keep-alive ping enviado com sucesso.");
         } catch (Exception e) {

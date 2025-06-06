@@ -33,15 +33,18 @@ public class AIGeminiConfig {
     @Value("${gemini.api.key}")
     private String key;
 
+    private final String MODEL = "gemini-2.5-flash-preview-05-20";
+
     public GenerateContentResponse configAIGemini(RequestDto requestDto) throws JsonProcessingException {
         Client client = Client.builder().apiKey(key).build();
 
-        log.debug("Chamando a API Gemini AI com o modelo: gemini-2.0-flash");
+
         GenerateContentResponse response =
                 client.models.generateContent(
-                        "gemini-2.0-flash",
+                        MODEL,
                         contextoAIGemini.contextAlpha(requestDto),
                         null);
+        log.debug("Chamando a API Gemini AI com o modelo: {}", MODEL);
 
         return response;
     }
