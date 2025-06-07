@@ -8,6 +8,8 @@ import tech.pierandrei.SimulaProva.dto.ResponseDto;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class PdfService {
@@ -205,9 +207,12 @@ public class PdfService {
             altParagraph.setIndentationLeft(15);
             altParagraph.setSpacingAfter(3);
 
+            // Remover letras para marcar repetitivas
+            String resultado = alternativa.replaceFirst("^[A-D]\\)\\s*", "");
+
             Chunk letraChunk = new Chunk(letraAlternativa + ") ",
                     createFont(9, Font.BOLD, SECONDARY_COLOR));
-            Chunk textoChunk = new Chunk(alternativa, createFont(9, Font.NORMAL, TEXT_COLOR));
+            Chunk textoChunk = new Chunk(resultado, createFont(9, Font.NORMAL, TEXT_COLOR));
 
             altParagraph.add(letraChunk);
             altParagraph.add(textoChunk);
