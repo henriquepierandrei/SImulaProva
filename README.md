@@ -1,5 +1,8 @@
 # SimulaProva API
 
+![Logo SimulaProva](src\main\resources\Simulaprova.png)
+
+
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-ED8B00?style=flat&logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Version](https://img.shields.io/badge/version-0.0.1--SNAPSHOT-blue)](https://github.com/seu-usuario/simulaprova)
@@ -24,22 +27,22 @@
 
 ## 🎯 Sobre o Projeto
 
-O **SimulaProva** oferece funcionalidades abrangentes para criação de questões por meio da inteligência artifical utilizando Gemini AI, e SpringBoot buscando escabilidade e robustez
+O **SimulaProva** oferece funcionalidades abrangentes para criação de questões por meio da inteligência artifical utilizando Gemini AI, e SpringBoot buscando escabilidade e robustez.
 
 ### Objetivos Principais
 
-- Facilitar a criação de simulado
-- Proporcionar uma experiência fluida para os usuários
+- Facilitar a criação de simulado.
+- Proporcionar uma experiência fluida para os usuários.
 - Possibilitar do usuário responder as perguntas ou gerar um PDF para imprimir as questões.
 - Garantir a acessibilidade dos usuários buscarem questões que influenciará no seu aprendizado.
 
 ## ⚡ Funcionalidades
 
 - **Gerar Perguntas**: gere perguntas através do tema quer for requisitado.
-- **Diferentes Dificuldades**: Possibilidade de alterar a dificuldade das questões (Fácil, Médio & Difícil)
+- **Diferentes Dificuldades**: Possibilidade de alterar a dificuldade das questões (Fácil, Médio & Difícil).
 - **Geração de PDF**: Geração de PDF caso o usuário prefira imprimir as perguntas.
 - **Análise de Desempenho**: Possibilita o usuário analisar quantas respostas foram corretas e a explicação das respostas.
-- **API RESTful**: Endpoints bem estruturados seguindo padrões REST
+- **API RESTful**: Endpoints bem estruturados seguindo padrões REST.
 
 ## 🛠 Tecnologias
 
@@ -53,7 +56,7 @@ O **SimulaProva** oferece funcionalidades abrangentes para criação de questõe
 
 Antes de começar, certifique-se de ter instalado:
 
-- **Java 21** ou superior
+- **Java 21** ou superior.
 - **Maven 3.5+**
 - **Git**
 
@@ -219,9 +222,9 @@ Contribuições são bem-vindas! Para contribuir:
 
 ### Padrões de Código
 
-- Siga as convenções do Java e Spring Boot
-- Documente métodos públicos
-- Use commits semânticos
+- Siga as convenções do Java e Spring Boot.
+- Documente métodos públicos.
+- Use commits semânticos.
 
 ## 📝 Licença
 
@@ -241,5 +244,5 @@ Este projeto está sob a licença MIT.
 ---
 
 <div align="center">
-  <sub>Desenvolvido com ❤️ usando Spring Boot</sub>
+  <sub>Desenvolvido com ❤️ usando Spring Boot!</sub>
 </div>
