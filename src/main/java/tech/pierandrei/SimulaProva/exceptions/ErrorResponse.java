@@ -12,6 +12,13 @@ package tech.pierandrei.SimulaProva.exceptions;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
+/**
+ *
+ * @param codigo - Código do erro
+ * @param mensagem - Mensagem do erro
+ * @param status - Status do erro
+ * @param timestamp - Momento do ero
+ */
 public record ErrorResponse(
         String codigo,
         String mensagem,

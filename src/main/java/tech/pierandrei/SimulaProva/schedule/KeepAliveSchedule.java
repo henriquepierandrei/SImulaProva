@@ -15,18 +15,24 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+
 @Component
 public class KeepAliveSchedule {
     private static final Logger log = LoggerFactory.getLogger(KeepAliveSchedule.class);
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // Executa a cada 10 minutos.
-    @Scheduled(cron = "0 */10 * * * *")
+    private final String URL = "https://simulaprova-latest.onrender.com/health";
+
+    /**
+     * Fazer requisicação a cada 10 minutos para manter a API sempre ativa.
+     */
+    // Executa a cada 15 minutos.
+    @Scheduled(cron = "0 */15 * * * *")
     public void keepAlive() {
         try {
-            String url = "https://simulaprova-latest.onrender.com/health";
-            restTemplate.getForObject(url, String.class);
-            log.debug("Keep-alive ping enviado com sucesso.");
+            restTemplate.getForObject(URL, String.class);
+            log.debug("Health: {}", LocalDateTime.now());
         } catch (Exception e) {
             log.error("Erro no keep-alive: {}",e.getMessage());
         }

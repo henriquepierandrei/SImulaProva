@@ -12,6 +12,9 @@ package tech.pierandrei.SimulaProva.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Exceção gerada quando o Tema da pergunta tiver um tamanho inválido.
+ */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "O tema da pergunta não deve passar de 300 caractéres!")
 public class TemaDaPerguntaException extends RuntimeException {
 

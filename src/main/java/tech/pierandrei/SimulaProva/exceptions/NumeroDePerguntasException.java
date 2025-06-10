@@ -12,6 +12,9 @@ package tech.pierandrei.SimulaProva.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Exceção gerada quando o número de perguntas for inválido.
+ */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Número de perguntas inválido")
 public class NumeroDePerguntasException extends RuntimeException {
 

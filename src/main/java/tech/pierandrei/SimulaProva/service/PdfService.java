@@ -3,61 +3,71 @@ package tech.pierandrei.SimulaProva.service;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.springframework.stereotype.Service;
-import tech.pierandrei.SimulaProva.dto.PerguntaDto;
-import tech.pierandrei.SimulaProva.dto.ResponseDto;
+import tech.pierandrei.SimulaProva.dto.alpha.PerguntaDto;
+import tech.pierandrei.SimulaProva.dto.alpha.ResponseAlphaDto;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/**
+ * Serviço responsável pela geração de PDFs de simulados
+ * Utiliza a biblioteca iText para criar documentos PDF formatados
+ * com layout moderno e profissional
+ */
 @Service
 public class PdfService {
 
-    private static final float PAGE_WIDTH = 595f;
-    private static final float PAGE_HEIGHT = 842f;
-    private static final float MARGIN = 30f;
-    private static final float CONTENT_WIDTH = PAGE_WIDTH - (2 * MARGIN);
+    // CONSTANTES DE LAYOUT - Definem as dimensões e margens do documento
+    private static final float PAGE_WIDTH = 595f;      // Largura padrão A4
+    private static final float PAGE_HEIGHT = 842f;     // Altura padrão A4
+    private static final float MARGIN = 30f;           // Margem das bordas
+    private static final float CONTENT_WIDTH = PAGE_WIDTH - (2 * MARGIN); // Área útil
 
-    // Iniciando as cores
-    private static final BaseColor PRIMARY_COLOR = new BaseColor(102, 126, 234); // #667eea
-    private static final BaseColor SECONDARY_COLOR = new BaseColor(118, 75, 162); // #764ba2
-    private static final BaseColor TEXT_COLOR = new BaseColor(55, 65, 81); // #374151
-    private static final BaseColor LIGHT_GRAY = new BaseColor(249, 250, 251); // #f9fafb
-    private static final BaseColor BORDER_COLOR = new BaseColor(229, 231, 235); // #e5e7eb
+    // PALETA DE CORES - Define o esquema visual do documento
+    private static final BaseColor PRIMARY_COLOR = new BaseColor(102, 126, 234);   // Azul principal
+    private static final BaseColor SECONDARY_COLOR = new BaseColor(118, 75, 162);  // Roxo secundário
+    private static final BaseColor TEXT_COLOR = new BaseColor(55, 65, 81);         // Cinza escuro para texto
+    private static final BaseColor LIGHT_GRAY = new BaseColor(249, 250, 251);      // Cinza claro para fundos
+    private static final BaseColor BORDER_COLOR = new BaseColor(229, 231, 235);    // Cinza para bordas
 
-
-
-    public byte[] gerarPdf(ResponseDto responseDto, Boolean adicionarGabarito) {
+    /**
+     * Método principal para geração do PDF
+     * @param responseDto Dados do simulado (perguntas, tema, dificuldade)
+     * @param adicionarGabarito Flag para incluir ou não o gabarito
+     * @return Array de bytes do PDF gerado
+     */
+    public byte[] gerarPdf(ResponseAlphaDto responseDto, Boolean adicionarGabarito) {
         try {
+            // Configuração inicial do documento
             Document document = new Document(PageSize.A4, MARGIN, MARGIN, MARGIN, MARGIN);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
-            // Configurar eventos para header/footer
+            // Configurar eventos customizados para header/footer
             ModernHeaderFooter headerFooter = new ModernHeaderFooter();
             writer.setPageEvent(headerFooter);
 
             document.open();
 
-            // Insere o PDF como template
+            // TEMPLATE DE FUNDO - Aplica um PDF template como background
+            // ATENÇÃO: Este recurso precisa do arquivo "/template.pdf" no resources
             PdfReader templateReader = new PdfReader(getClass().getResourceAsStream("/template.pdf"));
             PdfImportedPage templatePage = writer.getImportedPage(templateReader, 1);
             PdfContentByte background = writer.getDirectContentUnder();
             background.addTemplate(templatePage, 0, 0);
 
-            // Criar fontes compactas
+            // CONFIGURAÇÃO DE FONTES - Cria diferentes estilos tipográficos
             FontFactory.registerDirectories();
-            Font titleFont = createFont(14, Font.BOLD, PRIMARY_COLOR);
-            Font headerFont = createFont(12, Font.BOLD, TEXT_COLOR);
-            Font bodyFont = createFont(10, Font.NORMAL, TEXT_COLOR);
-            Font questionFont = createFont(10, Font.BOLD, TEXT_COLOR);
-            Font alternativeFont = createFont(9, Font.NORMAL, TEXT_COLOR);
+            Font titleFont = createFont(14, Font.BOLD, PRIMARY_COLOR);        // Títulos principais
+            Font headerFont = createFont(12, Font.BOLD, TEXT_COLOR);          // Cabeçalhos
+            Font bodyFont = createFont(10, Font.NORMAL, TEXT_COLOR);          // Texto comum
+            Font questionFont = createFont(10, Font.BOLD, TEXT_COLOR);        // Perguntas
+            Font alternativeFont = createFont(9, Font.NORMAL, TEXT_COLOR);    // Alternativas
 
-            // Header compacto
+            // MONTAGEM DO CONTEÚDO
             adicionarCabecalhoModerno(document, responseDto, titleFont, bodyFont);
 
-            // Perguntas
+            // Processa cada pergunta e monta o gabarito
             Map<Integer, String> gabarito = new HashMap<>();
             int numeroQuestao = 1;
 
@@ -66,7 +76,7 @@ public class PdfService {
                 numeroQuestao++;
             }
 
-            // Adicionar Gabarito
+            // Adiciona gabarito se solicitado
             if (adicionarGabarito) {
                 document.add(new Paragraph("\n"));
                 adicionarGabaritoCompacto(document, gabarito, headerFont, bodyFont);
@@ -80,6 +90,10 @@ public class PdfService {
         }
     }
 
+    /**
+     * Factory method para criar fontes com tratamento de erro
+     * Implementa fallback para fonte padrão caso a fonte Helvetica falhe
+     */
     private Font createFont(int size, int style, BaseColor color) {
         try {
             BaseFont baseFont = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
@@ -87,22 +101,26 @@ public class PdfService {
             font.setColor(color);
             return font;
         } catch (Exception e) {
-            // Fallback para fonte padrão
+            // Fallback para fonte padrão em caso de erro
             Font font = FontFactory.getFont(FontFactory.HELVETICA, size, style);
             font.setColor(color);
             return font;
         }
     }
 
-    private void adicionarCabecalhoModerno(Document document, ResponseDto responseDto, Font titleFont, Font bodyFont)
+    /**
+     * Cria cabeçalho moderno em layout de tabela
+     * Layout: [SIMULADO] [Tema] [Nível de Dificuldade]
+     */
+    private void adicionarCabecalhoModerno(Document document, ResponseAlphaDto responseDto, Font titleFont, Font bodyFont)
             throws DocumentException {
 
-        // Header compacto em uma linha
+        // Tabela de 3 colunas para organizar as informações
         PdfPTable headerTable = new PdfPTable(3);
         headerTable.setWidthPercentage(100);
-        headerTable.setWidths(new float[]{2, 1, 1});
+        headerTable.setWidths(new float[]{2, 1, 1}); // Proporções das colunas
 
-        // Título
+        // Coluna 1: Título "SIMULADO"
         PdfPCell titleCell = new PdfPCell();
         titleCell.setBorder(Rectangle.NO_BORDER);
         titleCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -110,7 +128,7 @@ public class PdfService {
         titleCell.addElement(title);
         headerTable.addCell(titleCell);
 
-        // Tema
+        // Coluna 2: Tema da prova
         PdfPCell temaCell = new PdfPCell();
         temaCell.setBorder(Rectangle.NO_BORDER);
         temaCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -118,7 +136,7 @@ public class PdfService {
         temaCell.addElement(tema);
         headerTable.addCell(temaCell);
 
-        // Dificuldade
+        // Coluna 3: Nível de dificuldade
         PdfPCell dificuldadeCell = new PdfPCell();
         dificuldadeCell.setBorder(Rectangle.NO_BORDER);
         dificuldadeCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -129,7 +147,7 @@ public class PdfService {
 
         document.add(headerTable);
 
-        // Separador fino
+        // Linha separadora decorativa
         PdfPTable separator = new PdfPTable(1);
         separator.setWidthPercentage(100);
         separator.setSpacingBefore(8);
@@ -143,10 +161,14 @@ public class PdfService {
         document.add(separator);
     }
 
+    /**
+     * Renderiza o gabarito em formato compacto (uma linha)
+     * Formato: "1: A | 2: B | 3: C ..."
+     */
     private void adicionarGabaritoCompacto(Document document, Map<Integer, String> gabarito,
                                            Font headerFont, Font bodyFont) throws DocumentException {
 
-        // Separador para gabarito
+        // Separador visual antes do gabarito
         PdfPTable separator = new PdfPTable(1);
         separator.setWidthPercentage(100);
         separator.setSpacingBefore(15);
@@ -159,17 +181,17 @@ public class PdfService {
         separator.addCell(separatorCell);
         document.add(separator);
 
-        // Título compacto
+        // Título da seção
         Paragraph gabaritoTitle = new Paragraph("GABARITO",
                 createFont(12, Font.BOLD, PRIMARY_COLOR));
         gabaritoTitle.setSpacingAfter(8);
         document.add(gabaritoTitle);
 
-        // Respostas em linha
+        // Concatena todas as respostas em uma única linha
         StringBuilder respostasLinha = new StringBuilder();
         for (Map.Entry<Integer, String> entry : gabarito.entrySet()) {
             if (respostasLinha.length() > 0) {
-                respostasLinha.append("  |  ");
+                respostasLinha.append("  |  "); // Separador visual
             }
             respostasLinha.append(entry.getKey()).append(": ").append(entry.getValue());
         }
@@ -179,20 +201,30 @@ public class PdfService {
         document.add(respostaParagraph);
     }
 
+    /**
+     * Método vazio - provavelmente era usado para separadores visuais
+     * Foi removido para economizar espaço no layout
+     */
     private void adicionarSeparador(Document document) throws DocumentException {
         // Método removido para economizar espaço
     }
 
+    /**
+     * Renderiza uma questão individual com suas alternativas
+     * @param pergunta Dados da pergunta
+     * @param numero Número sequencial da questão
+     * @param gabarito Map para armazenar a resposta correta
+     */
     private void adicionarQuestaoModerna(Document document, PerguntaDto pergunta, int numero,
                                          Font questionFont, Font alternativeFont, Map<Integer, String> gabarito)
             throws DocumentException {
 
-        // Pergunta em formato compacto
+        // Parágrafo da pergunta com numeração
         Paragraph questionParagraph = new Paragraph();
         questionParagraph.setSpacingBefore(8);
         questionParagraph.setSpacingAfter(6);
 
-        // Número da questão
+        // Chunk do número (colorido) + Chunk do texto da pergunta
         Chunk numeroChunk = new Chunk(numero + ". ", createFont(11, Font.BOLD, PRIMARY_COLOR));
         Chunk perguntaChunk = new Chunk(pergunta.pergunta(), createFont(10, Font.NORMAL, TEXT_COLOR));
 
@@ -200,14 +232,15 @@ public class PdfService {
         questionParagraph.add(perguntaChunk);
         document.add(questionParagraph);
 
-        // Alternativas compactas
+        // Renderiza cada alternativa (A, B, C, D)
         char letraAlternativa = 'A';
         for (String alternativa : pergunta.alternativas()) {
             Paragraph altParagraph = new Paragraph();
-            altParagraph.setIndentationLeft(15);
+            altParagraph.setIndentationLeft(15); // Indentação para hierarquia visual
             altParagraph.setSpacingAfter(3);
 
-            // Remover letras para marcar repetitivas
+            // REGEX para limpar letras duplicadas que possam vir dos dados
+            // Remove padrões como "A) " no início da string
             String resultado = alternativa.replaceFirst("^[A-D]\\)\\s*", "");
 
             Chunk letraChunk = new Chunk(letraAlternativa + ") ",
@@ -221,27 +254,32 @@ public class PdfService {
             letraAlternativa++;
         }
 
-        // Armazenar gabarito
+        // Armazena a resposta correta no mapa de gabarito
         gabarito.put(numero, pergunta.gabarito());
     }
 
+    /**
+     * Versão alternativa do gabarito em formato de grid/tabela
+     * Esta versão não está sendo utilizada no fluxo principal
+     */
     private void adicionarGabaritoModerno(Document document, Map<Integer, String> gabarito,
                                           Font headerFont, Font bodyFont) throws DocumentException {
 
-        // Título do gabarito
+        // Título centralizado
         Paragraph gabaritoTitle = new Paragraph("GABARITO",
                 createFont(14, Font.BOLD, PRIMARY_COLOR));
         gabaritoTitle.setAlignment(Element.ALIGN_CENTER);
         gabaritoTitle.setSpacingAfter(15);
         document.add(gabaritoTitle);
 
-        // Grid compacto de respostas
-        int colunas = Math.min(6, gabarito.size()); // Máximo 6 colunas
+        // Grid de respostas (máximo 6 colunas)
+        int colunas = Math.min(6, gabarito.size());
         PdfPTable gabaritoTable = new PdfPTable(colunas);
         gabaritoTable.setWidthPercentage(90);
         gabaritoTable.setHorizontalAlignment(Element.ALIGN_CENTER);
         gabaritoTable.setSpacingBefore(10);
 
+        // Preenche cada célula do grid
         for (Map.Entry<Integer, String> entry : gabarito.entrySet()) {
             PdfPCell gabaritoCell = new PdfPCell();
             gabaritoCell.setPadding(8);
@@ -249,6 +287,7 @@ public class PdfService {
             gabaritoCell.setHorizontalAlignment(Element.ALIGN_CENTER);
             gabaritoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
+            // Alternância de cores para melhor legibilidade
             if (entry.getKey() % 2 == 0) {
                 gabaritoCell.setBackgroundColor(LIGHT_GRAY);
             }
@@ -270,7 +309,10 @@ public class PdfService {
         document.add(gabaritoTable);
     }
 
-    // Classe para header e footer personalizados
+    /**
+     * Classe interna para customizar header e footer de cada página
+     * Implementa PdfPageEventHelper para interceptar eventos de página
+     */
     private static class ModernHeaderFooter extends PdfPageEventHelper {
         private Font footerFont;
 
@@ -278,31 +320,36 @@ public class PdfService {
             try {
                 BaseFont baseFont = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
                 footerFont = new Font(baseFont, 8, Font.NORMAL);
-                footerFont.setColor(new BaseColor(107, 114, 128)); // text-gray-500
+                footerFont.setColor(new BaseColor(107, 114, 128)); // Cinza suave
             } catch (Exception e) {
                 footerFont = FontFactory.getFont(FontFactory.HELVETICA, 8);
             }
         }
 
+        /**
+         * Evento disparado ao final de cada página
+         * Adiciona rodapé com numeração e linha decorativa no topo
+         */
         @Override
         public void onEndPage(PdfWriter writer, Document document) {
             try {
-                // Rodapé com número da página
                 PdfContentByte cb = writer.getDirectContent();
+
+                // Rodapé centralizado com nome da aplicação e número da página
                 Phrase footer = new Phrase("SimulaProva - Página " + writer.getPageNumber(), footerFont);
                 ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, footer,
                         (document.right() - document.left()) / 2 + document.leftMargin(),
                         document.bottom() - 10, 0);
 
-                // Linha decorativa no topo
-                cb.setColorStroke(new BaseColor(102, 126, 234, 50)); // PRIMARY_COLOR com transparência
+                // Linha decorativa colorida no topo da página
+                cb.setColorStroke(new BaseColor(102, 126, 234, 50)); // Azul com transparência
                 cb.setLineWidth(2f);
                 cb.moveTo(document.left(), document.top() + 10);
                 cb.lineTo(document.right(), document.top() + 10);
                 cb.stroke();
 
             } catch (Exception e) {
-                // Log do erro se necessário
+                // Ignora erros silenciosamente - poderia implementar logging aqui
             }
         }
     }

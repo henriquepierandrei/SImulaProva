@@ -15,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.pierandrei.SimulaProva.dto.RequestDto;
+import tech.pierandrei.SimulaProva.dto.alpha.RequestDto;
+import tech.pierandrei.SimulaProva.dto.omega.RequestOmegaDto;
 import tech.pierandrei.SimulaProva.service.AIGeminiService;
 
 @CrossOrigin
@@ -26,15 +27,35 @@ public class AIGeminiController {
     private AIGeminiService aiGeminiService;
 
     /**
-     * Manter a aplicação sempre recebendo requisição. (Evitar Cold Start)
-     *   @param requestDto  RequestDto para enviar os dados da requisição para a IA
+     * Enviar a requisição utilizando o contexto Alpha (Perguntas Objetivas)
+     *   @param requestDto  RequestOmegaDto para enviar os dados da requisição para a IA
      *   @return 200 ok, com a resposta em DTO
      */
-    @PostMapping("/request")
-    public ResponseEntity<?> enviarRequest(@RequestBody RequestDto requestDto, HttpServletRequest request) throws JsonProcessingException {
-        return ResponseEntity.status(HttpStatus.OK.value()).body(aiGeminiService.enviarRequisicao(requestDto, request));
+    @PostMapping("/alpha")
+    public ResponseEntity<?> enviarRequestAlpha(@RequestBody RequestDto requestDto, HttpServletRequest request) throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK.value()).body(aiGeminiService.enviarRequisicaoContextoAlpha(requestDto, request));
     }
 
+    /**
+     * Enviar a requisição utilizando o contexto Omega (Perguntas Discursivas)
+     *   @param requestDto  RequestOmegaDto para enviar os dados da requisição para a IA
+     *   @return 200 ok, com a resposta em DTO
+     * @throws JsonProcessingException - Erro na manipulação do Json.
+     */
+    @PostMapping("/omega")
+    public ResponseEntity<?> enviarRequestOmega(@RequestBody RequestDto requestDto, HttpServletRequest request) throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK.value()).body(aiGeminiService.enviarRequisicaoContextoOmega(requestDto, request));
+    }
 
-
+    /**
+     * Enviar a requisição com as resposta para a GEMINI API corrigir e retornar o response. (Perguntas Discursivas)
+     * @param requestOmegaDto - Perguntas e respostas para a Gemini API corrigir
+     * @param request - Obter os dados do client em que está fazendo a requisição
+     * @return 200 ok, com a resposta em DTO
+     * @throws JsonProcessingException - Erro na manipulação do Json.
+     */
+    @PostMapping("/omega/discursive")
+    public ResponseEntity<?> enviarRequestRespostaOmega(@RequestBody RequestOmegaDto requestOmegaDto, HttpServletRequest request) throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK.value()).body(aiGeminiService.enviarRequisicaoContextoFinalOmega(requestOmegaDto, request));
+    }
 }

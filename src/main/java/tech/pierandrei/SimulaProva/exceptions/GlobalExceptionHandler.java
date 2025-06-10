@@ -15,6 +15,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Tratar todas as exceções.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -36,6 +39,16 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(ErroNoContextoException.class)
+    public ResponseEntity<ErrorResponse> handleErroNoContextoException(ErroNoContextoException ex) {
+        ErrorResponse error = new ErrorResponse(
+                "CONTEXTO_UTILIZADO_INCORRETAMENTE",
+                ex.getMessage(),
+                HttpStatus.CONFLICT.value()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

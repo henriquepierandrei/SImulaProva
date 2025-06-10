@@ -7,11 +7,17 @@
  * deste código sem permissão explícita por escrito.
  */
 
-package tech.pierandrei.SimulaProva.dto;
+package tech.pierandrei.SimulaProva.dto.alpha;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import tech.pierandrei.SimulaProva.enuns.DificuldadeDaPerguntaEnum;
 
+/**
+ *
+ * @param dificuldadeDaPergunta - Dificuldade das perguntas escolhida pelo usuário (FACIL, MEDIO, DIFICIL)
+ * @param quantidadeDePerguntas - Quantidade de perguntas escolhida pelo usuário ( 0 < quantidadeDePerguntas <= 10)
+ * @param temaDasPerguntas - Tema das perguntas escolhida pelo usuário
+ */
 public record RequestDto(
         @JsonProperty("dificuldade_da_pergunta")
         DificuldadeDaPerguntaEnum dificuldadeDaPergunta,
@@ -21,6 +27,7 @@ public record RequestDto(
 
         @JsonProperty("tema_das_perguntas")
         String temaDasPerguntas
+
 ) {
     public RequestDto {
         // Exemplo de formatação do tema das perguntas

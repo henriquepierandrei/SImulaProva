@@ -12,6 +12,9 @@ package tech.pierandrei.SimulaProva.enuns;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * ENUM da dificuldade das perguntas
+ */
 public enum DificuldadeDaPerguntaEnum {
     FACIL("Fácil"),
     MEDIO("Médio"),
@@ -33,7 +36,11 @@ public enum DificuldadeDaPerguntaEnum {
         return this.displayName;
     }
 
-    // Evitar possíveis erros com o uso do Enum.
+    /**
+     * Evitar possíveis erros com o uso do Enum.
+     * @param value - Valor obtido do Enum
+     * @return - Retorna o valor caso o Enum inserido pelo usuário existe.
+     */
     @JsonCreator
     public static DificuldadeDaPerguntaEnum fromString(String value) {
         // Primeiro tenta pelo nome do enum
