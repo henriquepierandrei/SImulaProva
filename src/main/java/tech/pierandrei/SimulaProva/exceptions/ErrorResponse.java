@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * @param codigo - Código do erro
  * @param mensagem - Mensagem do erro
  * @param status - Status do erro
- * @param timestamp - Momento do ero
+ * @param timestamp - Momento do erro
  */
 public record ErrorResponse(
         String codigo,
