@@ -1,6 +1,6 @@
 # SimulaProva API
 
-![Logo SimulaProva](src\main\resources\Simulaprova.png)
+![image](https://res.cloudinary.com/dvadwwvub/image/upload/v1749487570/Simulaprova_1_hnx1lk.png)
 
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
