@@ -1,6 +1,6 @@
 # SimulaProva API
 
-![image](https://res.cloudinary.com/dvadwwvub/image/upload/v1749487570/Simulaprova_1_hnx1lk.png)
+![image](https://res.cloudinary.com/dvadwwvub/image/upload/v1749838704/Simulaprova_fxxeri.gif)
 
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
@@ -110,10 +110,10 @@ export GEMINI_API_KEY=Gere_sua_Gemini_Key_aqui:https://ai.google.dev/gemini-api/
 
 ## 📡 Uso da API
 
-### Gerar as Perguntas através da Gemini AI
+### 🔗 Gerar as Perguntas Objetivas através da Gemini AI
 
 ```bash
-POST /ai/generation/request
+POST /ai/generation/alpha
 Content-Type: application/json
 
 {
@@ -123,13 +123,52 @@ Content-Type: application/json
 }
 ```
 
-### Evitar Cold Start
+### 🔗 Gerar as Perguntas Discursivas através da Gemini AI
+
+```bash
+POST /ai/generation/omega
+Content-Type: application/json
+
+{
+  "dificuldade_da_pergunta": "MEDIO",
+  "quantidade_de_perguntas": "5"
+  "tema_das_perguntas": "Programação"
+}
+```
+
+
+### 🔗 Corrigir as Perguntas Discursivas através da Gemini AI
+
+```bash
+POST /ai/generation/omega/discursive
+Content-Type: application/json
+
+{
+  "responseOmegaGeracaoDto": {
+    "quantidade_de_perguntas": 3,
+    "tema_da_pergunta": "O tema das perguntas: Programacao JAVA",
+    "dificuldade_da_pergunta": "FACIL",
+    "perguntas": {
+      "1": "Descreva brevemente o que é a linguagem de programação Java, mencionando uma de suas principais características e a importância da Máquina Virtual Java (JVM) para sua execução.",
+      "2": "Explique o significado da frase 'Write Once, Run Anywhere' (WORA) no contexto da programação Java e qual benefício essa característica oferece aos desenvolvedores.",
+      "3": "Cite e descreva sucintamente um dos pilares fundamentais da Programação Orientada a Objetos (POO) e como ele se aplica ao desenvolvimento em Java."
+    }
+  },
+  "respostas": {
+    "1": "Java é uma linguagem de programação orientada a objetos",
+    "2": "WORA significa que você pode escrever código Java uma vez e executá-lo em qualquer lugar que tenha uma JVM instalada. Isso é possível porque o código Java é compilado para bytecode",
+    "3": "Um dos pilares da POO é o Encapsulamento, que consiste em ocultar os detalhes internos de uma classe e expor apenas o que é necessário através de métodos públicos."
+  }
+}
+```
+
+### 🔗 Evitar Cold Start
 
 ```bash
 GET /health
 ```
 
-### Gerar PDF através do response da geração
+### 🔗 Gerar PDF através do response da geração das perguntas. (Somente Perguntas Objetivas poderá gerar um PDF)
 
 ```bash
 POST /pdf/generate
@@ -183,9 +222,12 @@ Content-Type: application/json
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| `POST` | `/ai/generation/request` | Gere as perguntas utilizando GEMINI AI API |
+| `POST` | `/ai/generation/alpha` | Gere as perguntas (objetivas) utilizando GEMINI AI API |
+| `POST` | `/ai/generation/omega` | Gere as perguntas (discursivas) utilizando GEMINI AI API |
+| `POST` | `/ai/generation/omega/discursive` | Correção da IA em relação a resposta das perguntas (discursivas) utilizando GEMINI AI API |
 | `GET` | `/health` | Evite Cold Start |
-| `POST` | `/pdf/generate` | Gerar PDF através do response da API |
+| `POST` | `/pdf/generate` | Gerar PDF através do response da API (apenas para questões objetivas) |
+
 
 
 ## 📁 Estrutura do Projeto
@@ -244,5 +286,6 @@ Este projeto está sob a licença MIT.
 ---
 
 <div align="center">
-  <sub>Desenvolvido com ❤️ usando Spring Boot!</sub>
+  <sub>Desenvolvido com Spring Boot e React</sub><br>
+  <sub>© Henrique Pierandrei Fernandes - SimulaProva 2025</sub>
 </div>
